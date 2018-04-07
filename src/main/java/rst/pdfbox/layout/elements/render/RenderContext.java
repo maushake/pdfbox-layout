@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import rst.pdfbox.layout.elements.ControlElement;
 import rst.pdfbox.layout.elements.Document;
@@ -200,22 +200,22 @@ public class RenderContext implements Renderer, Closeable, DrawContext, DrawList
 	return Orientation.Portrait;
     }
 
-    /**
-     * @return <code>true</code> if the page is rotated by 90/270 degrees.
-     */
-    public boolean isPageTilted() {
-	return CompatibilityHelper.getPageRotation(page) == 90
-		|| CompatibilityHelper.getPageRotation(page) == 270;
-    }
+//    /**
+//     * @return <code>true</code> if the page is rotated by 90/270 degrees.
+//     */
+//    public boolean isPageTilted() {
+//	return CompatibilityHelper.getPageRotation(page) == 90
+//		|| CompatibilityHelper.getPageRotation(page) == 270;
+//    }
 
     /**
      * @return the page' width, or - if {@link #isPageTilted() rotated} - the
      *         height.
      */
     public float getPageWidth() {
-	if (isPageTilted()) {
-	    return page.getMediaBox().getHeight();
-	}
+//	if (isPageTilted()) {
+//	    return page.getMediaBox().getHeight();
+//	}
 	return page.getMediaBox().getWidth();
     }
 
@@ -224,9 +224,9 @@ public class RenderContext implements Renderer, Closeable, DrawContext, DrawList
      *         width.
      */
     public float getPageHeight() {
-	if (isPageTilted()) {
-	    return page.getMediaBox().getWidth();
-	}
+//	if (isPageTilted()) {
+//	    return page.getMediaBox().getWidth();
+//	}
 	return page.getMediaBox().getHeight();
     }
 
@@ -380,19 +380,19 @@ public class RenderContext implements Renderer, Closeable, DrawContext, DrawList
 	this.contentStream = CompatibilityHelper
 		.createAppendablePDPageContentStream(pdDocument, page);
 
-	// fix orientation
-	if (getPageOrientation() != getPageFormat().getOrientation()) {
-	    if (isPageTilted()) {
-		page.setRotation(0);
-	    } else {
-		page.setRotation(90);
-	    }
-	}
-
-	if (isPageTilted()) {
-	    CompatibilityHelper.transform(contentStream, 0, 1, -1, 0,
-		    getPageHeight(), 0);
-	}
+//	// fix orientation
+//	if (getPageOrientation() != getPageFormat().getOrientation()) {
+//	    if (isPageTilted()) {
+//		page.setRotation(0);
+//	    } else {
+//		page.setRotation(90);
+//	    }
+//	}
+//
+//	if (isPageTilted()) {
+//	    CompatibilityHelper.transform(contentStream, 0, 1, -1, 0,
+//		    getPageHeight(), 0);
+//	}
 
 	resetPositionToUpperLeft();
 	resetMaxPositionOnPage();
@@ -413,12 +413,12 @@ public class RenderContext implements Renderer, Closeable, DrawContext, DrawList
 	    annotationDrawListener.afterPage(this);
 	    document.afterPage(this);
 
-	    if (getPageFormat().getRotation() != 0) {
-		int currentRotation = CompatibilityHelper
-			.getPageRotation(getCurrentPage());
-		getCurrentPage().setRotation(
-			currentRotation + getPageFormat().getRotation());
-	    }
+//	    if (getPageFormat().getRotation() != 0) {
+//		int currentRotation = CompatibilityHelper
+//			.getPageRotation(getCurrentPage());
+//		getCurrentPage().setRotation(
+//			currentRotation + getPageFormat().getRotation());
+//	    }
 
 	    contentStream.close();
 	    contentStream = null;

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import rst.pdfbox.layout.text.DrawListener;
 import rst.pdfbox.layout.text.Position;

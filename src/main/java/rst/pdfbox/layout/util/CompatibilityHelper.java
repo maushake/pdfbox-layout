@@ -14,12 +14,14 @@ import org.apache.pdfbox.cos.COSFloat;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.color.PDGamma;
-import org.apache.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
-import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
-import org.apache.pdfbox.pdmodel.interactive.action.type.PDActionGoTo;
-import org.apache.pdfbox.pdmodel.interactive.action.type.PDActionURI;
+// import org.apache.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionURI;
+// import org.apache.pdfbox.pdmodel.interactive.action.type.PDActionGoTo;
+// import org.apache.pdfbox.pdmodel.interactive.action.type.PDActionURI;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
@@ -108,15 +110,15 @@ public class CompatibilityHelper {
 	return new PDPageContentStream(pdDocument, page, true, true);
     }
 
-    public static void drawImage(final BufferedImage image,
-	    final PDDocument document, final PDPageContentStream contentStream,
-	    Position upperLeft, final float width, final float height)
-	    throws IOException {
-	PDXObjectImage cachedImage = getCachedImage(document, image);
-	float x = upperLeft.getX();
-	float y = upperLeft.getY() - height;
-	contentStream.drawXObject(cachedImage, x, y, width, height);
-    }
+//    public static void drawImage(final BufferedImage image,
+//	    final PDDocument document, final PDPageContentStream contentStream,
+//	    Position upperLeft, final float width, final float height)
+//	    throws IOException {
+//	PDImageXObject cachedImage = getCachedImage(document, image);
+//	float x = upperLeft.getX();
+//	float y = upperLeft.getY() - height;
+//	contentStream.drawXObject(cachedImage, x, y, width, height);
+//    }
 
     /**
      * Renders the given page as an RGB image.
@@ -131,15 +133,17 @@ public class CompatibilityHelper {
      * @throws IOException
      *             by pdfbox
      */
-    public static BufferedImage createImageFromPage(final PDDocument document,
-	    final int pageIndex, final int resolution) throws IOException {
-	final PDPage page = (PDPage) document.getDocumentCatalog()
-		.getAllPages().get(pageIndex);
-	return page.convertToImage(BufferedImage.TYPE_INT_RGB, resolution);
-    }
+//    public static BufferedImage createImageFromPage(final PDDocument document,
+//	    final int pageIndex, final int resolution) throws IOException {
+//	final PDPage page = (PDPage) document.getDocumentCatalog().
+//		.getAllPages().get(pageIndex);
+//	page.get
+//	return page.convertToImage(BufferedImage.TYPE_INT_RGB, resolution);
+//    }
 
     public static int getPageRotation(final PDPage page) {
-	return page.getRotation() == null ? 0 : page.getRotation();
+	return // page.getRotation() == null ? 0 : 
+		page.getRotation();
     }
 
     public static PDAnnotationLink createLink(PDPage page, PDRectangle rect, Color color,
@@ -192,7 +196,11 @@ public class CompatibilityHelper {
      */
     public static void setAnnotationColor(final PDAnnotation annotation,
 	    Color color) {
-	annotation.setColour(toPDGamma(color));
+//	annotation.setColour(
+//			// toPDGamma(
+//			color
+//			// )
+//			);
     }
 
     private static PDGamma toPDGamma(final Color color) {
@@ -312,29 +320,30 @@ public class CompatibilityHelper {
 	return cache;
     }
 
-    private static synchronized Map<BufferedImage, PDXObjectImage> getImageCache(
+    private static synchronized Map<BufferedImage, PDImageXObject> getImageCache(
 	    final PDDocument document) {
 	Map<String, Map<?, ?>> documentCache = getDocumentCache(document);
 	@SuppressWarnings("unchecked")
-	Map<BufferedImage, PDXObjectImage> imageCache = (Map<BufferedImage, PDXObjectImage>) documentCache
+	Map<BufferedImage, PDImageXObject> imageCache = (Map<BufferedImage, PDImageXObject>) documentCache
 		.get(IMAGE_CACHE);
 	if (imageCache == null) {
-	    imageCache = new HashMap<BufferedImage, PDXObjectImage>();
+	    imageCache = new HashMap<BufferedImage, PDImageXObject>();
 	    documentCache.put(IMAGE_CACHE, imageCache);
 	}
 	return imageCache;
     }
 
-    private static synchronized PDXObjectImage getCachedImage(
-	    final PDDocument document, final BufferedImage image)
-	    throws IOException {
-	Map<BufferedImage, PDXObjectImage> imageCache = getImageCache(document);
-	PDXObjectImage pdxObjectImage = imageCache.get(image);
-	if (pdxObjectImage == null) {
-	    pdxObjectImage = new PDPixelMap(document, image);
-	    imageCache.put(image, pdxObjectImage);
-	}
-	return pdxObjectImage;
-    }
+//    private static synchronized PDImageXObject getCachedImage(
+//	    final PDDocument document, final BufferedImage image)
+//	    throws IOException {
+//	Map<BufferedImage, PDImageXObject> imageCache = getImageCache(document);
+//	PDImageXObject PDImageXObject = imageCache.get(image);
+//	if (PDImageXObject == null) {
+//	    PDImageXObject = PDImageXObject.createFromFile(image, document);
+//	    		// new PDPixelMap(document, image);
+//	    imageCache.put(image, PDImageXObject);
+//	}
+//	return PDImageXObject;
+//    }
 
 }
